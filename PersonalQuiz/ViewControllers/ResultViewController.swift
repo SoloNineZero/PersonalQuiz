@@ -17,7 +17,7 @@ final class ResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
-        let animal = getAnimal()
+        let animal = getPopularAnimal()
         updateUI(animal)
     }
     
@@ -30,7 +30,7 @@ final class ResultViewController: UIViewController {
 private extension ResultViewController {
     
     // Get the most popular answer animal
-    func getAnimal() -> Animal? {
+    func getPopularAnimal() -> Animal? {
         return Dictionary(grouping: answers, by: { $0.animal })
             .sorted(by: { $0.value.count > $1.value.count })
             .first?.key
