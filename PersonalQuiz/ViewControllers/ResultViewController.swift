@@ -31,8 +31,10 @@ final class ResultViewController: UIViewController {
 // MARK: Private Methods
 private extension ResultViewController {
     func getAnimal() {
+        var animals: [Any] = []
         for answer in answers {
-            print(answer.animal)
+            animals.append(answer.animal)
         }
+        
     }
 }
