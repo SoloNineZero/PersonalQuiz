@@ -29,16 +29,16 @@ final class ResultViewController: UIViewController {
 // MARK: Private Methods
 private extension ResultViewController {
     func getAnimal() {
-        var recountOgAnimals: [Animal: Int] = [:]
+        var recountOfAnimals: [Animal: Int] = [:]
         let animals = answers.map { $0.animal }
         for animal in animals {
-            if let animalType = recountOgAnimals[animal] {
-                recountOgAnimals.updateValue(animalType + 1, forKey: animal)
+            if let animalType = recountOfAnimals[animal] {
+                recountOfAnimals.updateValue(animalType + 1, forKey: animal)
             } else {
-                recountOgAnimals[animal] = 1
+                recountOfAnimals[animal] = 1
             }
         }
-        let sortedAnimal = recountOgAnimals.sorted { $0.value > $1.value }
+        let sortedAnimal = recountOfAnimals.sorted { $0.value > $1.value }
         guard let resultAnimal = sortedAnimal.first?.key else { return }
         updateUI(resultAnimal)
     }
