@@ -18,8 +18,7 @@ final class ResultViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.hidesBackButton = true
-        let animal = getAnimal()
-        updateUI(animal)
+        getAnimal()
     }
     
     @IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
@@ -29,14 +28,23 @@ final class ResultViewController: UIViewController {
 
 // MARK: Private Methods
 private extension ResultViewController {
-    func getAnimal() -> Animal? {
-        return Dictionary(grouping: answers, by: { $0.animal })
-            .sorted(by: { $0.value.count > $1.value.count })
-            .first?.key
+    func getAnimal() {
+        var recountOgAnimals: [Animal: Int] = [:]
+        let animals = answers.map { $0.animal }
+        for animal in animals {
+            if let animalType = recountOgAnimals[animal] {
+                recountOgAnimals.updateValue(animalType + 1, forKey: animal)
+            } else {
+                recountOgAnimals[animal] = 1
+            }
+        }
+        let sortedAnimal = recountOgAnimals.sorted { $0.value > $1.value }
+        guard let resultAnimal = sortedAnimal.first?.key else { return }
+        updateUI(resultAnimal)
     }
-    
-    func updateUI(_ animal: Animal?) {
-        animalLabel.text = "Вы - \(animal?.rawValue ?? " ")!"
-        definitionLabel.text = animal?.definition ?? ""
+
+    func updateUI(_ animal: Animal) {
+        animalLabel.text = "Вы - \(animal.rawValue)!"
+        definitionLabel.text = animal.definition
     }
 }
