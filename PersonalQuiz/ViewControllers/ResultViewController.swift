@@ -9,18 +9,16 @@ import UIKit
 
 final class ResultViewController: UIViewController {
     
-    // 3. Определить наиболее часто встречающийся тип животного
-    // 4. Отобразить результаты в соответствии с этим животным
-    
     @IBOutlet var animalLabel: UILabel!
-    @IBOutlet var descriptionLabel: UILabel!
+    @IBOutlet var definitionLabel: UILabel!
     
     var answers: [Answer]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
-        getAnimal()
+        let animal = getAnimal()
+        updateUI(animal)
     }
     
     @IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
@@ -30,11 +28,16 @@ final class ResultViewController: UIViewController {
 
 // MARK: Private Methods
 private extension ResultViewController {
-    func getAnimal() {
-        var animals: [Any] = []
-        for answer in answers {
-            animals.append(answer.animal)
-        }
-        print(animals)
+    
+    // Get the most popular answer animal
+    func getAnimal() -> Animal? {
+        return Dictionary(grouping: answers, by: { $0.animal })
+            .sorted(by: { $0.value.count > $1.value.count })
+            .first?.key
+    }
+    
+    func updateUI(_ animal: Animal?) {
+        animalLabel.text = "Вы - \(animal?.rawValue ?? " ")!"
+        definitionLabel.text = animal?.definition ?? ""
     }
 }
